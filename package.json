@@ -1,0 +1,20 @@
+{
+  "name": "telegram-paypalme-bot",
+  "version": "0.0.1",
+  "description": "Basic bot to request money using PayPal.me links.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "chatbot",
+    "paypal"
+  ],
+  "author": "Ferdinand Mütsch",
+  "license": "MIT",
+  "dependencies": {
+    "telegram-node-bot": "^4.0.3"
+  }
+}
