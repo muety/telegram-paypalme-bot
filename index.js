@@ -26,6 +26,10 @@ tg.router.inlineQuery(new InlineModeController())
 
 store.init(path.normalize(__dirname + constants.FILE_PATH_STORE));
 
+setInterval(() => {
+    store.flush();
+}, constants.FLUSH_INTERVAL);
+
 function exitHandler(exitCode) {
     store.flush();
     process.exit(exitCode);

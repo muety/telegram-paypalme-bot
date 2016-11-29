@@ -7,6 +7,7 @@ module.exports = {
     PAYPAL_LINK_TEMPLATE: 'https://www.paypal.me/$username$/$amount$',
     FILE_PATH_STORE: '/data/store.json',
     USER_UNKNOWN: 'Unknown',
+    FLUSH_INTERVAL: 3600000,
 
     // commands
     COMMAND_GET: '/get',
