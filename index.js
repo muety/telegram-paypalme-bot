@@ -2,6 +2,8 @@
 
 const Telegram = require('telegram-node-bot'),
     PersistentMemoryStorage = require('./adapters/PersistentMemoryStorage'),
+    path = require('path'),
+    store = require('./store'),
     storage = new PersistentMemoryStorage(
         `${__dirname}/data/userStorage.json`,
         `${__dirname}/data/chatStorage.json`
@@ -22,8 +24,11 @@ tg.router.inlineQuery(new InlineModeController())
     .when(new Telegram.TextCommand('/get', 'getCommand'), userCtrl)
     .otherwise(new OtherwiseController());
 
+store.init(path.normalize(__dirname + '/data/store.json'));
+
 function exitHandler(exitCode) {
     storage.flush();
+    store.flush();
     process.exit(exitCode);
 }
 

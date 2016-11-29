@@ -51,9 +51,6 @@ class PersistentMemoryStorage extends Telegram.BaseStorage {
     flush() {
         fs.writeFileSync(this.userStoragePath, JSON.stringify(this._storage.userStorage));
         fs.writeFileSync(this.chatStoragePath, JSON.stringify(this._storage.chatStorage));
-        setTimeout(() => {
-
-        }, 1000);
     }
 }
 

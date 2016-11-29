@@ -1,6 +1,7 @@
 'use strict';
 
-const Telegram = require('telegram-node-bot');
+const Telegram = require('telegram-node-bot')
+, store = require('./../store');
 
 class UserController extends Telegram.TelegramBaseController {
     handleSet($) {
@@ -8,13 +9,13 @@ class UserController extends Telegram.TelegramBaseController {
         if (!username) return $.sendMessage('Sorry, please pass a username.');
         username = username.replace(/"/g, '').replace(/;/g).replace(/\\/g, '').replace(/,/g, '');
 
-        $.setUserSession('username', username).then(() => {
+        store.set($.userId, username).then(() => {
             $.sendMessage(`Successfully set your PayPal.me name to ${username}.`);
         });
     }
 
     handleGet($) {
-        $.getUserSession('username').then(username => {
+        store.get($.userId).then(username => {
             if (username && typeof(username) === 'string') $.sendMessage(`Your PayPal.me user name is ${username}.`);
             else $.sendMessage(`You haven't set a PayPal.me user name, yet. You can do this using the /set command.`);
         });
