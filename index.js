@@ -1,13 +1,8 @@
 'use strict';
 
 const Telegram = require('telegram-node-bot'),
-    PersistentMemoryStorage = require('./adapters/PersistentMemoryStorage'),
     path = require('path'),
     store = require('./store'),
-    storage = new PersistentMemoryStorage(
-        `${__dirname}/data/userStorage.json`,
-        `${__dirname}/data/chatStorage.json`
-    ),
     tg = new Telegram.Telegram('295822875:AAFdsSSUBn2Et_n6EDGZAKln4yEyRRxEeQE', {
         workers: 1,
         storage: storage
