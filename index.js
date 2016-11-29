@@ -15,11 +15,13 @@ const Telegram = require('telegram-node-bot'),
 
 const InlineModeController = require('./controllers/inline_mode')
     , OtherwiseController = require('./controllers/otherwise')
-    , UserController = require('./controllers/user');
+    , UserController = require('./controllers/user')
+    , StartController = require('./controllers/start');
 
 const userCtrl = new UserController();
 
 tg.router.inlineQuery(new InlineModeController())
+    .when(new Telegram.TextCommand('/start', 'startCommand'), new StartController())
     .when(new Telegram.TextCommand('/set', 'setCommand'), userCtrl)
     .when(new Telegram.TextCommand('/get', 'getCommand'), userCtrl)
     .otherwise(new OtherwiseController());
