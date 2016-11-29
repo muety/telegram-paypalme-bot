@@ -1,7 +1,7 @@
 'use strict';
 
 const Telegram = require('telegram-node-bot')
-    , PAYPAL_ME_LINK_TEMPLATE = 'https://www.paypal.me/$username$/$amount$'
+    , constants = require('./../constants')
     , store = require('./../store');
 
 class InlineModeController extends Telegram.TelegramBaseInlineQueryController {
@@ -13,16 +13,16 @@ class InlineModeController extends Telegram.TelegramBaseInlineQueryController {
 
         store.get($.userId)
             .then(u => {
-                if (!u || typeof (u) !== 'string') $.answer([new Telegram.Models.InlineQueryResultArticle('article', '1', `No username specified. Try the /set command in @PayPalMeBot.`, new Telegram.Models.InputTextMessageContent('https://paypal.me'))]);
+                if (!u || typeof (u) !== 'string') $.answer([new Telegram.Models.InlineQueryResultArticle('article', '1', constants.TEXT_INLINE_NO_USERNAME, new Telegram.Models.InputTextMessageContent(constants.TEXT_INLINE_DEFAULT_LINK))]);
                 else {
                     username = u;
                     return $.getChat();
                 }
             })
             .then(c => {
-                let firstName = c.firstName || 'Unknown';
-                $.answer([new Telegram.Models.InlineQueryResultArticle('article', '1', `Request ${amount} €`,
-                    new Telegram.Models.InputTextMessageContent(`*${firstName}* has requested *${amount} €* via PayPal. Click [HERE](${this._buildLink(username, amount)}) to send it.`, 'markdown', true)
+                let firstName = c.firstName || constants.USER_UNKNOWN;
+                $.answer([new Telegram.Models.InlineQueryResultArticle('article', '1', constants.TEXT_INLINE_REQUEST.replace('$amount$', amount),
+                    new Telegram.Models.InputTextMessageContent(constants.TEXT_HAS_REQUESTED.replace('$firstName$', firstName).replace('$amount$', amount).replace('$link$', this._buildLink(username, amount)), 'markdown', true)
                 )]);
             });
     }
@@ -31,7 +31,7 @@ class InlineModeController extends Telegram.TelegramBaseInlineQueryController {
     }
 
     _buildLink(userName, amount) {
-        return PAYPAL_ME_LINK_TEMPLATE.replace('$username$', userName).replace('$amount$', amount);
+        return constants.PAYPAL_LINK_TEMPLATE.replace('$username$', userName).replace('$amount$', amount);
     }
 }
 

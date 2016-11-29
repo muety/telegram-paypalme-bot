@@ -1,10 +1,11 @@
 'use strict';
 
-const Telegram = require('telegram-node-bot');
+const Telegram = require('telegram-node-bot')
+    , constants = require('./../constants');
 
 class OtherwiseController extends Telegram.TelegramBaseController {
     handle($) {
-        $.sendMessage('Sorry, I don\'t understand.');
+        $.sendMessage(constants.TEXT_OTHERWISE);
     }
 }
 

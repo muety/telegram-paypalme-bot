@@ -4,6 +4,7 @@ const fs = require('fs');
 
 let map;
 let filePath;
+let clean;
 
 function init(jsonFilePath) {
     filePath = jsonFilePath;
@@ -13,6 +14,7 @@ function init(jsonFilePath) {
     catch (e) {
         map = {};
     }
+    clean = false;
 }
 
 function get(key) {
@@ -24,11 +26,14 @@ function get(key) {
 function set(key, val) {
     return new Promise((resolve, reject) => {
         map[key] = val;
+        clean = false;
         return resolve();
     });
 }
 
 function flush() {
+    if (clean) return;
+    clean = true;
     console.log('Flushing Key/Value Store');
     fs.writeFileSync(filePath, JSON.stringify(map));
 }

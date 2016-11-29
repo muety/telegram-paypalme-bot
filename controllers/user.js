@@ -1,23 +1,24 @@
 'use strict';
 
 const Telegram = require('telegram-node-bot')
+, constants = require('./../constants')
 , store = require('./../store');
 
 class UserController extends Telegram.TelegramBaseController {
     handleSet($) {
         let username = $.message.text.split(' ')[1];
-        if (!username) return $.sendMessage('Sorry, please pass a username.');
+        if (!username) return $.sendMessage(constants.TEXT_SET_USERNAME);
         username = username.replace(/"/g, '').replace(/;/g).replace(/\\/g, '').replace(/,/g, '');
 
         store.set($.userId, username).then(() => {
-            $.sendMessage(`Successfully set your PayPal.me name to ${username}.`);
+            $.sendMessage(constants.TEXT_SET_FORM_RESULT1.replace('$username$', username), {parse_mode: 'markdown'});
         });
     }
 
     handleGet($) {
         store.get($.userId).then(username => {
-            if (username && typeof(username) === 'string') $.sendMessage(`Your PayPal.me user name is ${username}.`);
-            else $.sendMessage(`You haven't set a PayPal.me user name, yet. You can do this using the /set command.`);
+            if (username && typeof(username) === 'string') $.sendMessage(constants.TEXT_GET_USERNAME.replace('$username$', username), {parse_mode: 'markdown'});
+            else $.sendMessage(constants.TEXT_REQUEST_MONEY_INLINE_FORM_ERROR);
         });
     }
 

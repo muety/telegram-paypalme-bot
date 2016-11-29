@@ -1,44 +1,67 @@
 'use strict';
 
 const Telegram = require('telegram-node-bot')
-    , store = require('./../store');
+    , store = require('./../store')
+    , constants = require('./../constants');
+
+const replyKeyboard1 = new Telegram.Models.ReplyKeyboardMarkup([
+    [new Telegram.Models.KeyboardButton(constants.TEXT_COMMAND_SET_PAYPAL)],
+    [new Telegram.Models.KeyboardButton(constants.TEXT_COMMAND_REQUEST_MONEY)]
+], true, false);
+
+const inlineKeyboard1 = new Telegram.Models.InlineKeyboardMarkup([[
+    new Telegram.Models.InlineKeyboardButton(constants.TEXT_SELECT_CONTACT_BUTTON, null, null, constants.TEXT_INLINE_DEFAULT)
+]]);
 
 class StartController extends Telegram.TelegramBaseController {
     handleStart($) {
-        $.runMenu({
-            message: 'Welcome! If you contacted me for the first time, please set your PayPal.me username first before you can start.',
-            options: {
-                parse_mode: 'Markdown'
-            },
-            'Set my PayPal.me username': {
-                message: 'Please give me your PayPal.me user name now. You can find it at [PayPal.me](https://paypal.me)',
-                options: {
-                    parse_mode: 'Markdown',
-                    disable_web_page_preview: true
-                },
-                resizeKeyboard: true,
-                'anyMatch': ($) => {
-                    let username = $.message.text.split(' ')[0];
-                    if (!username) return $.sendMessage('Sorry, please pass a username.');
-                    username = username.replace(/"/g, '').replace(/;/g).replace(/\\/g, '').replace(/,/g, '');
+        $.sendMessage(constants.TEXT_START, {
+            reply_markup: JSON.stringify(replyKeyboard1.toJSON())
+        });
+    }
 
-                    store.set($.userId, username).then(() => {
-                        $.sendMessage(`Successfully set your PayPal.me name to ${username}.`);
-                    });
+    handleSet($) {
+        const form = {
+            username: {
+                q: constants.TEXT_SET_FORM_VALID1,
+                error: constants.TEXT_SET_FORM_ERROR1,
+                validator: (message, callback) => {
+                    if (message.text && message.text.indexOf(' ') === -1) {
+                        callback(true, message.text);
+                        return;
+                    }
+                    callback(false);
                 }
-            },
-            'Request money': {
+            }
+        };
 
-            },
-            'anyMatch': () => { //will be executed at any other message
+        $.runForm(form, (result) => {
+            result.username = result.username.replace(/"/g, '').replace(/;/g).replace(/\\/g, '').replace(/,/g, '');
 
+            store.set($.userId, result.username).then(() => {
+                $.sendMessage(constants.TEXT_SET_FORM_RESULT1.replace('$username$', result.username), {parse_mode: 'markdown'});
+            });
+        });
+    }
+
+    handleRequest($) {
+        store.get($.userId).then(username => {
+            if (username) {
+                $.sendMessage(constants.TEXT_REQUEST_MONEY_INLINE_FORM, {
+                    reply_markup: JSON.stringify(inlineKeyboard1.toJSON())
+                });
+            }
+            else {
+                $.sendMessage(constants.TEXT_REQUEST_MONEY_INLINE_FORM_ERROR);
             }
         });
     }
 
     get routes() {
         return {
-            'startCommand': 'handleStart'
+            'startCommand': 'handleStart',
+            'setTextCommand': 'handleSet',
+            'requestTextCommand': 'handleRequest'
         };
     }
 }
