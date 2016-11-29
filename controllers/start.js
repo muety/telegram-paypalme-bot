@@ -16,6 +16,7 @@ const inlineKeyboard1 = new Telegram.Models.InlineKeyboardMarkup([[
 class StartController extends Telegram.TelegramBaseController {
     handleStart($) {
         $.sendMessage(constants.TEXT_START, {
+            parse_mode: 'markdown',
             reply_markup: JSON.stringify(replyKeyboard1.toJSON())
         });
     }
