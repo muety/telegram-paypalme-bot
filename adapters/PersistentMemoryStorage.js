@@ -10,9 +10,21 @@ class PersistentMemoryStorage extends Telegram.BaseStorage {
         this.userStoragePath = userStoragePath;
         this.chatStoragePath = chatStoragePath;
 
+        let userStorageFileContent;
+        let chatStorageFileContent;
+
+        try {
+            JSON.parse(fs.readFileSync(userStoragePath, 'utf8'));
+            JSON.parse(fs.readFileSync(chatStoragePath, 'utf8'));
+        }
+        catch (e) {
+            userStorageFileContent = {};
+            chatStorageFileContent = {};
+        }
+
         this._storage = {
-            userStorage: require(userStoragePath),
-            chatStorage: require(chatStoragePath)
+            userStorage: userStorageFileContent,
+            chatStorage: chatStorageFileContent
         };
     }
 
@@ -39,6 +51,9 @@ class PersistentMemoryStorage extends Telegram.BaseStorage {
     flush() {
         fs.writeFileSync(this.userStoragePath, JSON.stringify(this._storage.userStorage));
         fs.writeFileSync(this.chatStoragePath, JSON.stringify(this._storage.chatStorage));
+        setTimeout(() => {
+
+        }, 1000);
     }
 }
 
