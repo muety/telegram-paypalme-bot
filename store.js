@@ -19,7 +19,7 @@ function init(jsonFilePath) {
 
 function get(key) {
     return new Promise((resolve, reject) => {
-        return resolve(map[key] || null);
+        return resolve(map[key] || {});
     });
 }
 

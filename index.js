@@ -20,7 +20,9 @@ tg.router.inlineQuery(new InlineModeController())
     .when(new Telegram.TextCommand(constants.COMMAND_START, 'startCommand'), startCtrl)
     .when(new Telegram.TextCommand(constants.COMMAND_SET, 'setCommand'), userCtrl)
     .when(new Telegram.TextCommand(constants.COMMAND_GET, 'getCommand'), userCtrl)
+    .when(new Telegram.TextCommand(constants.COMMAND_CURRENCY, 'currencyCommand'), userCtrl)
     .when(new Telegram.TextCommand(constants.TEXT_COMMAND_SET_PAYPAL, 'setTextCommand'), startCtrl)
+    .when(new Telegram.TextCommand(constants.TEXT_COMMAND_SET_CURRENCY, 'currencyTextCommand'), startCtrl)
     .when(new Telegram.TextCommand(constants.TEXT_COMMAND_REQUEST_MONEY, 'requestTextCommand'), startCtrl)
     .otherwise(new OtherwiseController());
 
