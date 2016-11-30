@@ -46,5 +46,9 @@ module.exports = {
     TEXT_CURRENCY_GET: 'Your currency is set to $currency$.',
 
     DESCRIPTION: 'This bot helps you requesting money from friends more easily by generating and sending PayPal.me links. It works with inline mode from any chat, assumed both of you have a PayPal account.',
-    ABOUT: 'Bot to request money from friends using PayPal.me links. Created by @n1try (ferdinand-muetsch.de).'
+    ABOUT: 'Bot to request money from friends using PayPal.me links. Created by @n1try (ferdinand-muetsch.de).',
+    COMMAND_DESCRIPTION_GET: 'get - Get your PayPal.me user name',
+    COMMAND_DESCRIPTION_SET: 'set - Set your PayPal.me user name',
+    COMMAND_DESCRIPTION_CURRENCY: 'currency - Set your preferred currency',
+    COMMAND_DESCRIPTION_START: 'start - Show intro & menu buttons',
 };
