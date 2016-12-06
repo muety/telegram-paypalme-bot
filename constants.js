@@ -2,7 +2,7 @@
 
 module.exports = {
     // globals
-    TOKEN: '295822875:AAFdsSSUBn2Et_n6EDGZAKln4yEyRRxEeQE',
+    TOKEN: '',
     BOT_NAME: '@PayPalMeBot',
     PAYPAL_LINK_TEMPLATE: 'https://www.paypal.me/$username$/$amount$',
     FILE_PATH_STORE: '/data/store.json',
